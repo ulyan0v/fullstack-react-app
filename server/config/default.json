@@ -1,0 +1,5 @@
+{
+  "port": 3001,
+  "mongoUrl": "mongodb+srv://admin:admin@cluster0.zfl9l.mongodb.net/<dbname>?retryWrites=true&w=majority\n",
+  "jwtSecretKey": "very secret string"
+}
