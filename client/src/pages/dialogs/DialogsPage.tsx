@@ -2,27 +2,31 @@ import React from 'react';
 import {makeStyles, Theme} from '@material-ui/core/styles';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-// @ts-ignore
-import defaultAvatar from '../../assets/default_avatar.jpg';
 import Avatar from "@material-ui/core/Avatar";
-import Paper from "@material-ui/core/Paper";
+import Message from "./Message";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import {useQuery} from "@apollo/client";
+import {GET_USERS} from "../../utils/api/userApi";
+import {User} from "../../utils/Types";
+import {NavLink, useRouteMatch} from "react-router-dom";
+import Loader from "../../components/Loader";
+import MessageForm from "./MessageForm";
+import Grid from '@material-ui/core/Grid';
+import DialogCard from "./DialogCard";
+import {Paper} from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
-    display: 'flex',
-    height: window.innerHeight - theme.spacing(12)
+  chat: {
+    position: 'relative',
+    height: '100%'
+  },
+  wrapper: {
+    height: window.innerHeight - theme.spacing(12),
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
-  },
-  wrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    width: '100%'
   },
   tabText: {
     textTransform: 'none'
@@ -31,59 +35,34 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const DialogsPage: React.FC = () => {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const {params} = useRouteMatch<{ id: string }>();
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue);
-  };
+  const {data, loading} = useQuery(GET_USERS, {variables: {subscriptionsOnly: true}});
 
-  return (
-    <div className={classes.root}>
-      <Tabs
-        orientation="vertical"
-        variant="scrollable"
-        value={value}
-        onChange={handleChange}
-        className={classes.tabs}
-      >
-        <Tab
-          className={classes.tabText}
-          id={`vertical-tab-${0}`}
-          classes={{wrapper: classes.wrapper}}
-          icon={<Avatar variant='rounded' src={defaultAvatar}/>}
-          label={<Box pl={1}>Firstname Lastname</Box>}
-        />
-      </Tabs>
-      <TabPanel value={value} index={0}>
-        Item One
-      </TabPanel>
-    </div>
-  );
-}
+  if (loading) return <Loader open={true} />
 
-interface ITabPanelProps {
-  children: React.ReactNode,
-  value: number,
-  index: number
-}
-
-const TabPanel: React.FC<ITabPanelProps> = props => {
-  const {children, value, index} = props;
+  const dialogs = data.users.map((user: User) => {
+    return <DialogCard
+      firstName={user.firstName}
+      lastName={user.lastName}
+      avatar={user.avatar || ''}
+      id={user.id}/>
+  });
 
   return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`vertical-tabpanel-${index}`}
-    >
-      {value === index && (
-        <Box  p={3}>
-          <Paper>
-            123
-          </Paper>
-        </Box>
-      )}
-    </div>
+    <Paper className={classes.wrapper}>
+      <Grid container style={{height: '100%'}}>
+        <Grid item container direction='column' xs={3} className={classes.tabs}>
+          {dialogs}
+        </Grid>
+        <Grid item xs={9}>
+          <Box className={classes.chat}>
+            <Message/>
+            <MessageForm />
+          </Box>
+        </Grid>
+      </Grid>
+    </Paper>
   );
 }
 

@@ -1,4 +1,4 @@
-import React, {useReducer, useState} from 'react';
+import React, {useContext, useReducer, useState} from 'react';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -6,23 +6,20 @@ import {makeStyles, Theme} from "@material-ui/core/styles";
 import Box from '@material-ui/core/Box';
 import SignUp from './SignUp';
 import SignIn from './SignIn';
-import {connect} from "react-redux";
-import actions from "../../redux/globalReducer";
+import {AuthContext} from "../../utils/context/AuthContext";
 
 const useStyles = makeStyles((theme: Theme) => ({
   wrapper: {
     display: 'flex',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: theme.spacing(2)
   }
 }));
 
-interface IProps {
-  login: (id: string, token: string) => void
-}
-
-const AuthPage: React.FC<IProps> = props => {
+const AuthPage: React.FC = () => {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const {login} = useContext(AuthContext);
+  const [value, setValue] = React.useState('signIn');
   const [formFields, setFormFields] = useState({
     firstName: '',
     lastName: '',
@@ -39,7 +36,7 @@ const AuthPage: React.FC<IProps> = props => {
     }));
   }
 
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
     setValue(newValue);
   };
 
@@ -52,23 +49,25 @@ const AuthPage: React.FC<IProps> = props => {
           textColor='primary'
           onChange={handleChange}
         >
-          <Tab label="Вход"/>
-          <Tab label="Регистрация"/>
+          <Tab value='signIn' label="Вход"/>
+          <Tab value='signUp' label="Регистрация"/>
         </Tabs>
         <Box p={2}>
-          {value
-            ? <SignUp
-              login={props.login}
-              formFields={formFields}
+          {value === 'signUp' &&
+          <SignUp
+            login={login}
+            changeFormField={changeFormField}
+            formFields={formFields}
+          />
+          }
+          {value === 'signIn' &&
+            <SignIn
+              login={login}
               changeFormField={changeFormField}
-            />
-            : <SignIn
-              login={props.login}
               formFields={{
                 email: formFields.email,
                 password: formFields.password
               }}
-              changeFormField={changeFormField}
             />
           }
         </Box>
@@ -77,8 +76,4 @@ const AuthPage: React.FC<IProps> = props => {
   );
 }
 
-const mapDispatchToProps = {
-  login: actions.login
-}
-
-export default connect(null, mapDispatchToProps)(AuthPage);
+export default AuthPage;

@@ -1,19 +1,21 @@
-import * as React from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
 import {BrowserRouter} from "react-router-dom";
-import {Provider} from 'react-redux';
-import store from "./redux/store";
-import Apollo from "./components/Apollo";
+import ThemesProvider from "./utils/context/ThemeContext";
+import AuthProvider from "./utils/context/AuthContext";
+import Apollo from "./utils/context/ApolloContext";
+import App from './App';
 
 ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <Apollo>
-        <App/>
-      </Apollo>
-    </BrowserRouter>
-  </Provider>,
+  <BrowserRouter>
+    <ThemesProvider>
+      <AuthProvider>
+        <Apollo>
+          <App/>
+        </Apollo>
+      </AuthProvider>
+    </ThemesProvider>
+  </BrowserRouter>,
   document.querySelector('#app')
 );
 

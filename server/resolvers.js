@@ -1,19 +1,26 @@
 module.exports = {
   Query: {
-    users: async (parent, args, {dataSources}) => {
-      return await dataSources.userApi.getUsers();
+    confirmAuth: (_, __, {userId}) => {
+      if (userId) return {success: true};
+      return {success: false}
+    },
+    user: async (parent, {id}, context) => {
+      if (!context.userId) return null;
+      return await context.dataSources.userApi.getUser(context.userId, id);
+    },
+    users: async (_, {subscriptionsOnly}, context) => {
+      return await context.dataSources.userApi.getUsers(context.userId, subscriptionsOnly);
     }
   },
   Mutation: {
-    user: async (parent, {id}, context) => {
-      if (!context.userId) console.log('Нету id')
-      if (!id) id = context.userId;
-      return await context.dataSources.userApi.getUser(id);
+    toggleSubscribe: async (_, {id}, context) => {
+      if (!context.userId) return null;
+      await context.dataSources.userApi.toggleSubscribe(context.userId, id)
     },
-    login: async (_, {email, password}, context) => {
-      return await context.dataSources.userApi.login(email, password);
+    login: async (_, {email, password}, {dataSources}) => {
+      return await dataSources.userApi.login(email, password);
     },
-    register: async (parents, args, {dataSources}) => {
+    register: async (_, args, {dataSources}) => {
       return await dataSources.userApi.register(args);
     }
   }

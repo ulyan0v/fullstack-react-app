@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React from 'react';
 import {Switch, Route, Redirect} from 'react-router-dom';
 import { Suspense } from 'react';
 import Loader from './Loader';
 
 const AuthPage = React.lazy(() => import('../pages/auth/AuthPage')) ;
 const ProfilePage = React.lazy(() => import('../pages/profile/ProfilePage'));
-const FriendsPage = React.lazy(() => import('../pages/friends/FriendsPage'));
+const FriendsPage = React.lazy(() => import('../pages/users/UsersPage'));
 const DialogsPage = React.lazy(() => import('../pages/dialogs/DialogsPage'));
 
 interface IRoutesProps {
@@ -16,9 +16,9 @@ const Routes: React.FC<IRoutesProps> = ({isAuth}) => {
   if (isAuth) {
     return (
       <Switch>
-        <LazyRoute path='/profile' component={<ProfilePage/>} />
+        <LazyRoute path='/profile/:id?' component={<ProfilePage/>} />
         <LazyRoute path='/friends' component={<FriendsPage/>} />
-        <LazyRoute path='/dialogs' component={<DialogsPage/>} />
+        <LazyRoute path='/dialogs/:id?' component={<DialogsPage/>} />
         <Redirect to='/profile'/>
       </Switch>
     );
@@ -38,12 +38,14 @@ interface IRouteProps {
 }
 
 const LazyRoute: React.FC<IRouteProps> = props => {
+  const {path, component} = props;
+
   return (
-    <Route path={props.path} exact>
+    <Route path={path} render={() => (
       <Suspense fallback={<Loader open={true} />}>
-        {props.component}
+        {component}
       </Suspense>
-    </Route>
+    )}/>
   );
 }
 

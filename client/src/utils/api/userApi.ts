@@ -1,18 +1,9 @@
 import {gql} from '@apollo/client';
 
 export const GET_USERS = gql`
-  query {
-    users {
-      firstName,
-      lastName,
-      email
-    }
-  }
-`;
-
-export const GET_USER = gql`
-  mutation user($id: ID) {
-    user(id: $id) {
+  query users($subscriptionsOnly: Boolean) {
+    users(subscriptionsOnly: $subscriptionsOnly) {
+      id,
       firstName,
       lastName,
       email,
@@ -21,30 +12,21 @@ export const GET_USER = gql`
   }
 `;
 
-export const REGISTER = gql`
-  mutation(
-    $email: String,
-    $password:  String,
-    $firstName: String,
-    $lastName: String
-  ) {
-    register(
-      email: $email,
-      password: $password,
-      firstName: $firstName,
-      lastName: $lastName
-    ) {
-      id,
-      token
-    }
-  }
-`;
-
-export const LOGIN = gql`
-  mutation login($email: String, $password: String) {
-  login(email: $email, password: $password) {
-    id,
-    token
+export const GET_USER = gql`
+  query user($id: ID) {
+  user(id: $id) {
+    firstName,
+    lastName,
+    email,
+    isSubscribed
   }
 }
+`;
+
+export const TOGGLE_SUBSCRIBE = gql`
+ mutation toggleSubscribe($id: ID!){
+   toggleSubscribe(id: $id){
+     success
+   }
+ }
 `;

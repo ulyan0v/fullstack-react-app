@@ -10,15 +10,12 @@ const server = new ApolloServer({
   context: async ({req}) => {
     try {
       const token = req.headers.authorization;
-
       if (!token) return {userId: null};
 
       const decoded = jwt.verify(token, config.get('jwtSecretKey'));
 
       return {userId: decoded.userId};
-    } catch (err) {
-      console.log(err);
-    }
+    } catch (err) {}
   },
   typeDefs,
   resolvers,
@@ -27,15 +24,16 @@ const server = new ApolloServer({
   })
 });
 
-// const io = require('socket.io')(server)
-// console.log(io)
-// io.on('connection', socket => {
-//   console.log('Пользователь присоединился');
-//
-//   socket.on('disconnect', () => {
-//     console.log('Пользователь отсоединился');
-//   });
-// });
+const io = require('socket.io')(4001, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
+});
+
+io.on('connection', socket => {
+  console.log(socket.id)
+});
 
 mongoose.connect(config.get('mongoUrl'), {
   useNewUrlParser: true,
@@ -49,17 +47,3 @@ mongoose.connect(config.get('mongoUrl'), {
   console.log(err.message);
   process.exit(1);
 });
-
-// mongoose.connect(config.get('mongoUrl'), {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-//   useCreateIndex: true
-// }).then(() => {
-//   const PORT = config.get('port');
-//   server.listen(() => {
-//     console.log(`Server has been started on port ${PORT}...`);
-//   });
-// }).catch(err => {
-//   console.log(err.message);
-//   process.exit(1);
-// });

@@ -1,12 +1,12 @@
-import * as React from 'react';
+import React from 'react';
+import {useMutation} from "@apollo/client";
+import {LOGIN} from "../../utils/api/authApi";
+import {makeStyles, Theme} from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import Button from '@material-ui/core/Button'
 import Box from '@material-ui/core/Box';
-import {makeStyles, Theme} from '@material-ui/core/styles';
-import {useMutation} from "@apollo/client";
-import {LOGIN} from "../../utils/api/userApi";
 
 const useStyles = makeStyles((theme: Theme) => ({
   wrapper: {
@@ -28,12 +28,12 @@ const SignIn: React.FC<IProps> = props => {
   const classes = useStyles();
   const {email, password} = props.formFields;
 
-  const [authUser, {loading}] = useMutation(LOGIN);
+  const [login, {loading}] = useMutation(LOGIN);
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    authUser({
+    login({
       variables: {
         email,
         password
