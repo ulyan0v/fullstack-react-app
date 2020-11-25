@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useMutation} from "@apollo/client";
 import {REGISTER} from "../../utils/api/authApi";
 import {makeStyles, Theme} from '@material-ui/core/styles';
@@ -35,7 +35,7 @@ const SignUp: React.FC<IProps> = props => {
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-
+    if (password !== confirmPassword) return;
     addUser({
       variables: {
         firstName,
@@ -107,6 +107,7 @@ const SignUp: React.FC<IProps> = props => {
           required
           name='confirmPassword'
           value={confirmPassword}
+          error={password !== confirmPassword}
           onChange={props.changeFormField}
           disabled={loading}
         />
