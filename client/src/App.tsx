@@ -21,14 +21,6 @@ const App: React.FC = () => {
     setIsAuth(data.confirmAuth.success);
   }, [data]);
 
-  useEffect(() => {
-    const socket = io.connect('http://localhost:4001')
-
-    socket.on("connect", () => {
-
-    });
-  }, []);
-
   return (
     <>
       <CssBaseline/>

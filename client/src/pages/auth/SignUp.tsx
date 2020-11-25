@@ -44,7 +44,6 @@ const SignUp: React.FC<IProps> = props => {
         password
       }
     }).then(res => {
-      console.log(res)
       const {id, token} = res.data.register;
       props.login(id, token);
     });

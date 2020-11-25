@@ -5,15 +5,13 @@ import {TOGGLE_SUBSCRIBE} from '../../utils/api/userApi';
 import Button from '@material-ui/core/Button';
 import Avatar from '@material-ui/core/Avatar';
 import {NavLink} from 'react-router-dom';
+import {Box} from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     avatar: {
       width: '100%',
       height: '100%',
-    },
-    button: {
-      marginTop: theme.spacing(2)
     }
   })
 );
@@ -28,7 +26,7 @@ interface IProps {
 const AvatarPanel: React.FC<IProps> = props => {
   const classes = useStyles();
   const [isSubscribed, setIsSubscribed] = useState(props.isSubscribed);
-  const [toggleSubscribe, {loading}] = useMutation(TOGGLE_SUBSCRIBE, )
+  const [toggleSubscribe, {loading}] = useMutation(TOGGLE_SUBSCRIBE,)
 
   const handleSubscribe = () => {
     toggleSubscribe({variables: {id: props.userId}}).then(res => {
@@ -45,26 +43,28 @@ const AvatarPanel: React.FC<IProps> = props => {
       />
       {!props.isCurrentUser && (
         <>
-          <Button
-            onClick={handleSubscribe}
-            variant='contained'
-            color='primary'
-            fullWidth
-            disabled={loading}
-            className={classes.button}
-          >
-            {isSubscribed ? 'Отписаться' : 'Подписаться'}
-          </Button>
-          <NavLink to={`/dialogs/${props.userId}`}>
+          <Box mt={2}>
             <Button
+              onClick={handleSubscribe}
               variant='contained'
               color='primary'
               fullWidth
-              className={classes.button}
+              disabled={loading}
             >
-              Написать
+              {isSubscribed ? 'Отписаться' : 'Подписаться'}
             </Button>
-          </NavLink>
+          </Box>
+          <Box mt={2}>
+            <NavLink to={`/dialogs/${props.userId}`}>
+              <Button
+                variant='contained'
+                color='primary'
+                fullWidth
+              >
+                Написать
+              </Button>
+            </NavLink>
+          </Box>
         </>
       )}
     </>

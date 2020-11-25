@@ -3,8 +3,6 @@ const jwt = require("jsonwebtoken");
 const config = require('config');
 const bcrypt = require('bcryptjs');
 
-const TOKEN_EXPIRES_IN = '1h';
-
 module.exports.getUser = async (userId, id) => {
   const currentUser = await User.findById(userId);
 
@@ -55,7 +53,7 @@ module.exports.login = async (email, password) => {
   const token = jwt.sign(
     {userId: user.id},
     config.get('jwtSecretKey'),
-    {expiresIn: TOKEN_EXPIRES_IN}
+    {expiresIn: config.get('jwtExpiresIn')}
   );
 
   return {id: user.id, token};
@@ -80,7 +78,7 @@ module.exports.register = async ({firstName, lastName, email, password}) => {
   const token = jwt.sign(
     {userId: user.id},
     config.get('jwtSecretKey'),
-    {expiresIn: TOKEN_EXPIRES_IN}
+    {expiresIn: config.get('jwtExpiresIn')}
   );
 
   return {id: user.id, token};

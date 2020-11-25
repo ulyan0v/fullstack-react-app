@@ -18,11 +18,9 @@ const typeDefs = gql`
   }
   
   type Message {
-    id: ID!
-    author: User!
-    text: String
-    nested: String
-    timestamp: Int!
+    from: ID!
+    to: ID!
+    text: String!
   }
   
   type Response {
@@ -46,6 +44,7 @@ const typeDefs = gql`
       lastName: String,
     ): Auth
     toggleSubscribe(id: ID!): Response
+    sendMessage(id: ID!, text: String!): Message
   }
 `;
 

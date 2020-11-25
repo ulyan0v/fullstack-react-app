@@ -1,8 +1,9 @@
 const config = require('config');
 const mongoose = require('mongoose');
 const User = require('./models/User');
+const Message = require('./models/Message');
 
-const clearUsers = async () => {
+const clear = async () => {
   await mongoose.connect(config.get('mongoUrl'), {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -15,9 +16,20 @@ const clearUsers = async () => {
     await User.findByIdAndDelete(user._id);
   }
 
+  const messages = await Message.find({});
+
+  for (const message of messages) {
+    await User.findByIdAndDelete(message._id);
+  }
+
   await mongoose.disconnect();
 }
 
-clearUsers().catch(err => {
+clear().catch(err => {
   console.log(err);
 });
+
+
+
+
+

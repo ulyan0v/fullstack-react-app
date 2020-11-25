@@ -1,12 +1,12 @@
-import React, {useContext, useReducer, useState} from 'react';
+import React, {useContext, useState} from 'react';
+import {AuthContext} from "../../utils/context/AuthContext";
+import {makeStyles, Theme} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import {makeStyles, Theme} from "@material-ui/core/styles";
 import Box from '@material-ui/core/Box';
 import SignUp from './SignUp';
 import SignIn from './SignIn';
-import {AuthContext} from "../../utils/context/AuthContext";
 
 const useStyles = makeStyles((theme: Theme) => ({
   wrapper: {
@@ -57,18 +57,16 @@ const AuthPage: React.FC = () => {
           <SignUp
             login={login}
             changeFormField={changeFormField}
-            formFields={formFields}
-          />
+            formFields={formFields}/>
           }
           {value === 'signIn' &&
-            <SignIn
-              login={login}
-              changeFormField={changeFormField}
-              formFields={{
-                email: formFields.email,
-                password: formFields.password
-              }}
-            />
+          <SignIn
+            login={login}
+            changeFormField={changeFormField}
+            formFields={{
+              email: formFields.email,
+              password: formFields.password
+            }}/>
           }
         </Box>
       </Paper>

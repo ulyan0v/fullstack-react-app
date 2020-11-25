@@ -30,12 +30,12 @@ interface ILinkProps {
   text: string
 }
 
-const Link: React.FC<ILinkProps> = props => {
+const Link: React.FC<ILinkProps> = ({to, text}) => {
   return (
     <li>
-      <NavLink to={props.to}>
+      <NavLink to={to}>
         <Button color="primary">
-          {props.text}
+          {text}
         </Button>
       </NavLink>
     </li>

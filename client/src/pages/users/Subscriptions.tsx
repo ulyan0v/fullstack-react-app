@@ -1,11 +1,11 @@
 import React, {useEffect} from 'react';
-import {useQuery} from "@apollo/client";
+import {useQuery} from '@apollo/client';
 import {GET_USERS} from '../../utils/api/userApi';
 import {User} from '../../utils/Types';
 import UserCard from './UserCard';
 import Loader from '../../components/Loader';
 import Grid from '@material-ui/core/Grid';
-import {Typography} from "@material-ui/core";
+import Typography from '@material-ui/core/Typography';
 
 const Subscriptions: React.FC = () => {
   const {data, loading, refetch} = useQuery(GET_USERS, {variables: {subscriptionsOnly: true}});
@@ -32,7 +32,11 @@ const Subscriptions: React.FC = () => {
   });
 
   if (!users.length)
-    return <Typography style={{width: '100%'}} align='center'>Вы пока ни на кого не подписаны</Typography>;
+    return (
+      <Typography style={{width: '100%'}} align='center'>
+        Вы пока ни на кого не подписаны
+      </Typography>
+    );
 
   return (
     <Grid container spacing={3}>

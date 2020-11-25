@@ -3,7 +3,7 @@ import TextField from "@material-ui/core/TextField";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 
-const NewPostForm: React.FC = props => {
+const PostForm: React.FC = props => {
   return (
     <Box display='flex'>
       <TextField label='Что у вас нового?' fullWidth variant='outlined' />
@@ -16,4 +16,4 @@ const NewPostForm: React.FC = props => {
   );
 }
 
-export default NewPostForm;
+export default PostForm;

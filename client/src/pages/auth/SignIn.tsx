@@ -1,6 +1,6 @@
 import React from 'react';
-import {useMutation} from "@apollo/client";
-import {LOGIN} from "../../utils/api/authApi";
+import {useMutation} from '@apollo/client';
+import {LOGIN} from '../../utils/api/authApi';
 import {makeStyles, Theme} from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -20,7 +20,7 @@ interface IProps {
     email: string,
     password: string
   },
-  changeFormField(event: React.ChangeEvent<HTMLInputElement>): void,
+  changeFormField: (event: React.ChangeEvent<HTMLInputElement>) => void,
   login: (id: string, token: string) => void
 }
 
@@ -34,12 +34,8 @@ const SignIn: React.FC<IProps> = props => {
     event.preventDefault();
 
     login({
-      variables: {
-        email,
-        password
-      }
+      variables: {email, password}
     }).then(res => {
-      console.log(res)
       const {id, token} = res.data.login;
       props.login(id, token);
     });
@@ -60,7 +56,9 @@ const SignIn: React.FC<IProps> = props => {
         />
       </FormControl>
       <FormControl margin='dense'>
-        <InputLabel htmlFor="form-fields-password">Password</InputLabel>
+        <InputLabel htmlFor="form-fields-password">
+          Пароль
+        </InputLabel>
         <Input
           type='password'
           id="form-fields-password"

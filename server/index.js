@@ -4,7 +4,8 @@ const jwt = require('jsonwebtoken');
 const {ApolloServer} = require('apollo-server');
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
-const userApi = require('./datasouces/userApi')
+const userApi = require('./datasouces/userApi');
+const messageApi = require('./datasouces/messageApi');
 
 const server = new ApolloServer({
   context: async ({req}) => {
@@ -13,7 +14,7 @@ const server = new ApolloServer({
       if (!token) return {userId: null};
 
       const decoded = jwt.verify(token, config.get('jwtSecretKey'));
-
+      // console.log(token)
       return {userId: decoded.userId};
     } catch (err) {}
   },
@@ -21,6 +22,7 @@ const server = new ApolloServer({
   resolvers,
   dataSources: () => ({
     userApi: userApi,
+    messageApi: messageApi
   })
 });
 
@@ -29,10 +31,6 @@ const io = require('socket.io')(4001, {
     origin: "http://localhost:3000",
     methods: ["GET", "POST"]
   }
-});
-
-io.on('connection', socket => {
-  console.log(socket.id)
 });
 
 mongoose.connect(config.get('mongoUrl'), {

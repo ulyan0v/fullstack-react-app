@@ -3,13 +3,11 @@ import {AuthContext} from "../utils/context/AuthContext";
 import {ThemesContext} from "../utils/context/ThemeContext";
 import {makeStyles, Theme, createStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
-import Toolbar from "@material-ui/core/Toolbar";
-import Container from "@material-ui/core/Container";
+import Toolbar from '@material-ui/core/Toolbar';
+import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
-import Button from "@material-ui/core/Button";
-import MailIcon from '@material-ui/icons/Mail';
+import Button from '@material-ui/core/Button';
 import DarkThemeIcon from '@material-ui/icons/Brightness7';
 import LightThemeIcon from '@material-ui/icons/Brightness4';
 
@@ -42,11 +40,6 @@ const Header: React.FC = () => {
             My React App
           </Typography>
           <div className={classes.grow}/>
-          <IconButton aria-label="show 4 new mails" color="inherit">
-            <Badge badgeContent={0} color="secondary">
-              <MailIcon/>
-            </Badge>
-          </IconButton>
           <IconButton onClick={handleToggleTheme} color="inherit">
             {isDarkMode ? <DarkThemeIcon/> : <LightThemeIcon/>}
           </IconButton>

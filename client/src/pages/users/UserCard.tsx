@@ -48,29 +48,29 @@ const UserCard: React.FC<IProps> = props => {
           <NavLink to={`/profile/${id}`}>
             <Typography color='textPrimary' component="h4" variant="h6" noWrap>
               {`${firstName} ${lastName}`}
+            </Typography>
+          </NavLink>
+          <Typography variant="subtitle1" color="textSecondary">
+            {email}
           </Typography>
-        </NavLink>
-        <Typography variant="subtitle1" color="textSecondary">
-          {email}
-        </Typography>
-      </div>
+        </div>
+        <div>
+          <NavLink to={`/dialogs/${id}`}>
+            <Button color='primary' size='small'>
+              <Typography className={classes.button} variant="subtitle2" noWrap>
+                Написать собщение
+              </Typography>
+            </Button>
+          </NavLink>
+        </div>
+      </CardContent>
       <div>
         <NavLink to={`/dialogs/${id}`}>
-          <Button color='primary' size='small'>
-            <Typography className={classes.button} variant="subtitle2" noWrap>
-              Написать собщение
-            </Typography>
-          </Button>
+          <Avatar variant='square' className={classes.avatar} src={avatar}/>
         </NavLink>
       </div>
-    </CardContent>
-  <div>
-    <NavLink to={`/dialogs/${id}`}>
-      <Avatar variant='square' className={classes.avatar} src={avatar}/>
-    </NavLink>
-  </div>
-</Card>
-);
+    </Card>
+  );
 }
 
 export default UserCard;

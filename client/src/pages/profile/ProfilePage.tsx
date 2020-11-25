@@ -1,12 +1,12 @@
 import React, {useContext, useEffect} from 'react';
 import {useRouteMatch} from 'react-router-dom';
-import {AuthContext} from "../../utils/context/AuthContext";
+import {AuthContext} from '../../utils/context/AuthContext';
 import {useQuery} from '@apollo/client';
 import {GET_USER} from '../../utils/api/userApi';
 import Post from './Post';
-import Loader from "../../components/Loader";
-import AvatarPanel from "./AvatarPanel";
-import NewPostForm from "./NewPostForm";
+import Loader from '../../components/Loader';
+import AvatarPanel from './AvatarPanel';
+import PostForm from './PostForm';
 import {makeStyles, Theme, createStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -57,16 +57,9 @@ const ProfilePage: React.FC = () => {
           <Divider/>
         </Paper>
         <Paper className={classes.paper}>
-          <NewPostForm/>
+          <PostForm/>
         </Paper>
-
         <Grid container spacing={2}>
-          <Grid xs={6} item>
-            <Post/>
-          </Grid>
-          <Grid xs={6} item>
-            <Post/>
-          </Grid>
           <Grid xs={6} item>
             <Post/>
           </Grid>
